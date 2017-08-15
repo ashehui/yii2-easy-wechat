@@ -46,6 +46,11 @@ class Wechat extends Component
 	 */
 	private static $_user;
 
+    /**
+     * @var cache
+     */
+    private $_cache;
+
 	/**
 	 * @return yii\web\Response
 	 */
@@ -114,8 +119,11 @@ class Wechat extends Component
 	 */
 	public function getApp()
 	{
+	    $options = Yii::$app->params['WECHAT'];
+	    $options['cache'] = $this->_cache ?: '';
+
 		if(! self::$_app instanceof Application){
-			self::$_app = new Application(Yii::$app->params['WECHAT']);
+		    self::$_app = new Application($options);
 		}
 		return self::$_app;
 	}
@@ -164,4 +172,9 @@ class Wechat extends Component
 	{
 		return strpos($_SERVER["HTTP_USER_AGENT"], "MicroMessenger") !== false;
 	}
+
+    public function setCache($config)
+    {
+        $this->_cache = Yii::createObject($config);
+    }
 }
