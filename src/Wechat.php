@@ -123,7 +123,9 @@ class Wechat extends Component
 	    $options['cache'] = $this->_cache ?: '';
 
 		if(! self::$_app instanceof Application){
+                    $level = ini_get('error_reporting');
 		    self::$_app = new Application($options);
+                    error_reporting($level);
 		}
 		return self::$_app;
 	}
